@@ -7,23 +7,54 @@ from eralchemy2 import render_er
 
 Base = declarative_base()
 
-class Person(Base):
-    __tablename__ = 'person'
-    # Here we define columns for the table person
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    name = Column(String(250), nullable=False)
+# class Person(Base):
+#     __tablename__ = 'person'
+#     # Here we define columns for the table person
+#     # Notice that each column is also a normal Python instance attribute.
+#     id = Column(Integer, primary_key=True)
+#     name = Column(String(250), nullable=False)
 
-class Address(Base):
-    __tablename__ = 'address'
-    # Here we define columns for the table address.
-    # Notice that each column is also a normal Python instance attribute.
+# class Address(Base):
+#     __tablename__ = 'address'
+#     # Here we define columns for the table address.
+#     # Notice that each column is also a normal Python instance attribute.
+#     id = Column(Integer, primary_key=True)
+#     street_name = Column(String(250))
+#     street_number = Column(String(250))
+#     post_code = Column(String(250), nullable=False)
+#     person_id = Column(Integer, ForeignKey('person.id'))
+#     person = relationship(Person)
+
+class User(Base):
+    __tablename__="user"
     id = Column(Integer, primary_key=True)
-    street_name = Column(String(250))
-    street_number = Column(String(250))
-    post_code = Column(String(250), nullable=False)
-    person_id = Column(Integer, ForeignKey('person.id'))
-    person = relationship(Person)
+    user_name=Column(String(20), nullable=False)
+    first_name=Column(String(50) ,nullable=False)
+    last_name= Column(String(50),nullable=False)
+    email= Column(String(100),nullable=False unique=True )
+
+class Post(Base):
+    __tablename__="post"
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'))
+
+class Comment(Base):
+    __tablename__="comment"
+    id=Column(Integer, primary_key=True)
+    author_id= Column(Integer, ForeignKey('user.id'))
+    post_id= Column(Integer, ForeignKey('post.id'))
+
+class Media(Base):
+    __tablename__="base"
+    id=Column(Integer, primary_key=True)
+    type=Column(Integer, nullable=False)
+    url=Column(String(150), nullable=False)
+    post_id=Column(Integer,ForeignKey('post.id'))
+
+class Followers(Base):
+    __tablename__="followes"
+    user_from_id=Column(Integer, ForeignKey=('user.id'))
+    user_to_id=Column(Integer, ForeignKey=('user.id'))
 
     def to_dict(self):
         return {}
